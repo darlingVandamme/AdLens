@@ -1,0 +1,9 @@
+{
+  "name": "AdLens",
+  "version": "0.0.1",
+  "dependencies": {
+    "core-js": "^3.8.3",
+    "fb": "^2.0.0",
+    "mongodb": "^3.6.4"
+  }
+}

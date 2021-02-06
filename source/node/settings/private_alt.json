@@ -1,0 +1,12 @@
+{
+  "development": {
+    "mongoUser": "",
+    "mongoPassword": "",
+    "fbClientId" : "",
+    "fbClientSecret" : "",
+    "fbAccessToken" : ""
+  },
+  "production": {
+
+  }
+}

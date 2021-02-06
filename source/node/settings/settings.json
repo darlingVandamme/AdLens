@@ -1,0 +1,18 @@
+{
+  "development": {
+    "mongoURL": "mongodb://127.0.0.1:27017/adlens",
+    "dbName": "adlens",
+    "type": "development",
+    "port": 3000,
+    "logDir": "./log/",
+    "debug": true
+  },
+  "production": {
+    "mongoURL": "mongodb://127.0.0.1:27017/adlens",
+    "dbName": "adlens",
+    "type": "production",
+    "port": 3004,
+    "logDir": "/var/log/express/text2tree/",
+    "debug": false
+  }
+}
