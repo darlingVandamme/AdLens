@@ -184,7 +184,7 @@ function getIDs(){
         // db.pages.find({status:1, lastCheck:{$lt: Date.now() - (24*60*60*1000)}}).count()
         const query ={
             status:1,
-            lastCheck: {$lt: Date.now() - (12*60*60*1000)}
+            lastCheck: {$lt: Date.now() - (23*60*60*1000)}
         }
         const cursor = coll.find(query).limit(150)
 
