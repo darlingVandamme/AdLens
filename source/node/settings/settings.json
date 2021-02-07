@@ -8,7 +8,7 @@
     "debug": true
   },
   "production": {
-    "mongoURL": "mongodb://127.0.0.1:27017/adlens",
+    "mongoURL": "mongodb+srv://cluster0.5fcl3.mongodb.net/adLens?retryWrites=true&w=majority",
     "dbName": "adlens",
     "type": "production",
     "port": 3004,
