@@ -141,17 +141,40 @@ function save(data){
         // update impressions, potential reach, spend
         const coll2 = db.collection('adsEvol')
         data.forEach(ad =>{
+            // first add an initial spendingEvol item
+            /*ad.spendingEvol = [{
+                moment:new Date(ad.ad_creation_time),
+                timestamp:new Date(ad.ad_creation_time).getTime(),
+                value:0,
+                spending : {
+                    "lower_bound" : "0",
+                    "upper_bound" : "0"
+                }
+            }]
+            */
+            ad.input_timestamp = Date.now()
+            ad.input_moment = new Date()
+
             const update = {
+                $setOnInsert:ad,
                 $set:{
                     updateTimestamp: Date.now(),
-                    moment: new Date()
+                    moment: new Date(),
+                    last_demographic_distribution : ad.demographic_distribution,
+                    last_impressions : ad.impressions,
+                    last_potential_reach : ad.potential_reach,
+                    last_spend:ad.spend
                 },
-                $setOnInsert:ad,
+                $inc:{
+                    updateCount:1
+                },
                 $push:{
                     impressionEvol:{
                         timestamp: Date.now(),
                         moment: new Date(),
                         value: ad?.impressions?.lower_bound,
+                        valueMin: ad?.impressions?.lower_bound,
+                        valueMax: ad?.impressions?.upper_bound,
                         impressions: ad.impressions
                     },
                     reachEvol:{
@@ -162,8 +185,10 @@ function save(data){
                     },
                     spendingEvol:{timestamp: Date.now(),
                         moment: new Date(),
-                        value: ad.spend?.lower_bound,
-                        reach: ad.spend
+                        value: {$avg :[parseInt(ad.spend?.lower_bound),parseInt(ad.spend?.upper_bound)]},
+                        spending: ad.spend,
+                        valueMin: parseInt(ad.spend?.lower_bound),
+                        valueMax: parseInt(ad.spend?.upper_bound)
                     }
                 }
             }
@@ -172,7 +197,7 @@ function save(data){
 
 
     } catch (err){
-        console.error(err.message)
+        console.error("Error saving" + err.message)
     } finally{
         //client.close()
     }
@@ -183,7 +208,7 @@ function getIDs(){
         const coll = db.collection('pages')
         // db.pages.find({status:1, lastCheck:{$lt: Date.now() - (24*60*60*1000)}}).count()
         const query ={
-            status:1,
+            status:{$gte:1} ,
             lastCheck: {$lt: Date.now() - (23*60*60*1000)}
         }
         const cursor = coll.find(query).limit(150)
